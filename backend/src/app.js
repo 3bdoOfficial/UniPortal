@@ -6,6 +6,7 @@ import morgan from "morgan";
 import { CLIENT_URL, NODE_ENV } from "./config/env.js";
 import notFound from "./middlewares/notFound.middleware.js";
 import errorHandler from "./middlewares/error.middleware.js";
+import authRoutes from "./routes/auth.routes.js";
 
 const app = express();
 
@@ -27,7 +28,15 @@ if (NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-// 5. التقاط المسارات غير الموجودة (404) ومعالج الأخطاء المركزي
+// 5. فحص حالة السيرفر (Health Check)
+app.get("/api/health", (req, res) => {
+  res.json({ status: "ok", message: "Server is healthy and connected" });
+});
+
+// 6. مسارات المصادقة والمستخدمين
+app.use("/api/auth", authRoutes);
+
+// 7. التقاط المسارات غير الموجودة (404) ومعالج الأخطاء المركزي
 app.use(notFound);
 app.use(errorHandler);
 

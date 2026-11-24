@@ -180,24 +180,16 @@ export default function RegisterPage() {
 
       const response = await authService.register(payload);
 
-      setSuccessMessage("Account created successfully! Redirecting...");
+      setSuccessMessage("Account created successfully! Redirecting to Login...");
 
-      // If backend returns a token & user immediately, log them in
-      if (response?.token && response?.user && loginUser) {
-        loginUser(response.token, response.user);
-        setTimeout(() => {
-          navigate("/profile");
-        }, 1200);
-      } else {
-        setTimeout(() => {
-          navigate("/login", {
-            state: {
-              registered: true,
-              email: formData.email.trim(),
-            },
-          });
-        }, 1500);
-      }
+      setTimeout(() => {
+        navigate("/login", {
+          state: {
+            registered: true,
+            email: formData.email.trim(),
+          },
+        });
+      }, 1500);
     } catch (err) {
       const responseData = err.response?.data;
       if (responseData?.errors) {
@@ -330,7 +322,7 @@ export default function RegisterPage() {
               <span style={styles.errorText}>{errors.studentId}</span>
             ) : (
               <span style={styles.helperText}>
-                Must be exactly 7 digits ({formData.studentId.length}/7).
+                Must be exactly 7 digits.
               </span>
             )}
           </div>
