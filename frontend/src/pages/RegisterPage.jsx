@@ -13,6 +13,10 @@ export default function RegisterPage() {
     lastName: "",
     studentId: "",
     email: "",
+    phone: "",
+    faculty: "",
+    department: "",
+    academicYear: "",
     password: "",
     confirmPassword: "",
   });
@@ -65,6 +69,35 @@ export default function RegisterPage() {
         if (!emailRegex.test(val)) {
           return "Please enter a valid email address (e.g. student@uni.edu).";
         }
+        return "";
+      }
+
+      case "phone": {
+        if (!val) return "Phone number is required.";
+        if (!/^\+?[\d\s()-]+$/.test(val)) {
+          return "Please enter a valid phone number (optional country code, digits, spaces, or dashes).";
+        }
+        const digits = val.replace(/\D/g, "");
+        if (digits.length < 7 || digits.length > 15) {
+          return "Phone number must contain between 7 and 15 digits.";
+        }
+        return "";
+      }
+
+      case "faculty":
+        if (!val) return "Faculty is required.";
+        if (val.length < 2) return "Faculty must be at least 2 characters.";
+        return "";
+
+      case "department":
+        if (!val) return "Department is required.";
+        if (val.length < 2) return "Department must be at least 2 characters.";
+        return "";
+
+      case "academicYear": {
+        const validYears = ["First Year", "Second Year", "Third Year", "Fourth Year"];
+        if (!val) return "Academic year is required.";
+        if (!validYears.includes(val)) return "Please select a valid academic year.";
         return "";
       }
 
@@ -174,22 +207,34 @@ export default function RegisterPage() {
         fullName,
         studentId: formData.studentId.trim(),
         email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
+        faculty: formData.faculty.trim(),
+        department: formData.department.trim(),
+        academicYear: formData.academicYear,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
       };
 
       const response = await authService.register(payload);
 
-      setSuccessMessage("Account created successfully! Redirecting to Login...");
+      setSuccessMessage("Account created successfully! Redirecting...");
 
-      setTimeout(() => {
-        navigate("/login", {
-          state: {
-            registered: true,
-            email: formData.email.trim(),
-          },
-        });
-      }, 1500);
+      // If backend returns a token & user immediately, log them in
+      if (response?.token && response?.user && loginUser) {
+        loginUser(response.token, response.user);
+        setTimeout(() => {
+          navigate("/profile");
+        }, 1200);
+      } else {
+        setTimeout(() => {
+          navigate("/login", {
+            state: {
+              registered: true,
+              email: formData.email.trim(),
+            },
+          });
+        }, 1500);
+      }
     } catch (err) {
       const responseData = err.response?.data;
       if (responseData?.errors) {
@@ -322,7 +367,7 @@ export default function RegisterPage() {
               <span style={styles.errorText}>{errors.studentId}</span>
             ) : (
               <span style={styles.helperText}>
-                Must be exactly 7 digits.
+                Must be exactly 7 digits ({formData.studentId.length}/7).
               </span>
             )}
           </div>
@@ -349,6 +394,108 @@ export default function RegisterPage() {
             />
             {touched.email && errors.email && (
               <span style={styles.errorText}>{errors.email}</span>
+            )}
+          </div>
+
+          {/* Phone Number */}
+          <div style={styles.formGroup}>
+            <label htmlFor="phone" style={styles.label}>
+              Phone Number <span style={styles.required}>*</span>
+            </label>
+            <input
+              id="phone"
+              name="phone"
+              type="tel"
+              value={formData.phone}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              placeholder="e.g. +20 100 123 4567"
+              autoComplete="tel"
+              style={{
+                ...styles.input,
+                ...(touched.phone && errors.phone ? styles.inputError : {}),
+              }}
+              disabled={loading}
+            />
+            {touched.phone && errors.phone && (
+              <span style={styles.errorText}>{errors.phone}</span>
+            )}
+          </div>
+
+          {/* Faculty & Department */}
+          <div style={styles.row}>
+            <div style={styles.col}>
+              <label htmlFor="faculty" style={styles.label}>
+                Faculty <span style={styles.required}>*</span>
+              </label>
+              <input
+                id="faculty"
+                name="faculty"
+                type="text"
+                value={formData.faculty}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="e.g. Computer Science"
+                style={{
+                  ...styles.input,
+                  ...(touched.faculty && errors.faculty ? styles.inputError : {}),
+                }}
+                disabled={loading}
+              />
+              {touched.faculty && errors.faculty && (
+                <span style={styles.errorText}>{errors.faculty}</span>
+              )}
+            </div>
+
+            <div style={styles.col}>
+              <label htmlFor="department" style={styles.label}>
+                Department <span style={styles.required}>*</span>
+              </label>
+              <input
+                id="department"
+                name="department"
+                type="text"
+                value={formData.department}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                placeholder="e.g. Software Engineering"
+                style={{
+                  ...styles.input,
+                  ...(touched.department && errors.department ? styles.inputError : {}),
+                }}
+                disabled={loading}
+              />
+              {touched.department && errors.department && (
+                <span style={styles.errorText}>{errors.department}</span>
+              )}
+            </div>
+          </div>
+
+          {/* Academic Year */}
+          <div style={styles.formGroup}>
+            <label htmlFor="academicYear" style={styles.label}>
+              Academic Year <span style={styles.required}>*</span>
+            </label>
+            <select
+              id="academicYear"
+              name="academicYear"
+              value={formData.academicYear}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              style={{
+                ...styles.input,
+                ...(touched.academicYear && errors.academicYear ? styles.inputError : {}),
+              }}
+              disabled={loading}
+            >
+              <option value="">Select Academic Year</option>
+              <option value="First Year">First Year</option>
+              <option value="Second Year">Second Year</option>
+              <option value="Third Year">Third Year</option>
+              <option value="Fourth Year">Fourth Year</option>
+            </select>
+            {touched.academicYear && errors.academicYear && (
+              <span style={styles.errorText}>{errors.academicYear}</span>
             )}
           </div>
 
