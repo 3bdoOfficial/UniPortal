@@ -1,16 +1,20 @@
-import { Router } from "express";
-import { register, login, getProfile } from "../controllers/auth.controller.js";
+
+import express from "express";
+
+import {
+  register,
+  login,
+  getProfile,
+  updateProfile,
+} from "../controllers/auth.controller.js";
+
 import { protect } from "../middlewares/auth.middleware.js";
 
-const router = Router();
+const router = express.Router();
 
-// /api/auth/register
 router.post("/register", register);
-
-// /api/auth/login
 router.post("/login", login);
-
-// /api/auth/profile
 router.get("/profile", protect, getProfile);
+router.put("/profile", protect, updateProfile);
 
 export default router;
