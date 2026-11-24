@@ -1,8 +1,7 @@
 import axios from "axios";
 
 const BASE_URL =
-  (typeof process !== "undefined" && process.env?.REACT_APP_API_BASE_URL) ||
-  "http://localhost:5000/api";
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
 
 const api = axios.create({
   baseURL: BASE_URL,
