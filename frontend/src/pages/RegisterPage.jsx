@@ -269,7 +269,7 @@ export default function RegisterPage() {
                 value={formData.firstName}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder="e.g. Ahmed"
+                placeholder=""
                 style={{
                   ...styles.input,
                   ...(touched.firstName && errors.firstName ? styles.inputError : {}),
@@ -292,7 +292,7 @@ export default function RegisterPage() {
                 value={formData.lastName}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder="e.g. Ali"
+                placeholder=""
                 style={{
                   ...styles.input,
                   ...(touched.lastName && errors.lastName ? styles.inputError : {}),
@@ -319,7 +319,7 @@ export default function RegisterPage() {
               value={formData.studentId}
               onChange={handleChange}
               onBlur={handleBlur}
-              placeholder="e.g. 2024101"
+              placeholder="e.g. 2427257"
               style={{
                 ...styles.input,
                 ...(touched.studentId && errors.studentId ? styles.inputError : {}),
@@ -338,7 +338,7 @@ export default function RegisterPage() {
           {/* Email */}
           <div style={styles.formGroup}>
             <label htmlFor="email" style={styles.label}>
-              University Email <span style={styles.required}>*</span>
+              Email <span style={styles.required}>*</span>
             </label>
             <input
               id="email"
@@ -347,7 +347,7 @@ export default function RegisterPage() {
               value={formData.email}
               onChange={handleChange}
               onBlur={handleBlur}
-              placeholder="student@university.edu"
+              placeholder="e.g. username@domain.com"
               autoComplete="email"
               style={{
                 ...styles.input,
