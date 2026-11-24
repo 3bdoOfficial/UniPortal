@@ -1,5 +1,4 @@
 import mongoose from "mongoose";
-import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema(
   {
@@ -41,23 +40,46 @@ const userSchema = new mongoose.Schema(
       enum: ["student", "employee", "admin"],
       default: "student",
     },
+    phone: {
+      type: String,
+      required: [true, "Phone number is required"],
+      trim: true,
+      validate: {
+        validator: (val) => {
+          if (!/^\+?[\d\s()-]+$/.test(val)) return false;
+          const digits = val.replace(/\D/g, "");
+          return digits.length >= 7 && digits.length <= 15;
+        },
+        message: "Please provide a valid phone number (7-15 digits, optional country code)",
+      },
+    },
+    faculty: {
+      type: String,
+      required: [true, "Faculty is required"],
+      trim: true,
+      minlength: [2, "Faculty must be at least 2 characters"],
+      maxlength: [100, "Faculty cannot exceed 100 characters"],
+    },
+    department: {
+      type: String,
+      required: [true, "Department is required"],
+      trim: true,
+      minlength: [2, "Department must be at least 2 characters"],
+      maxlength: [100, "Department cannot exceed 100 characters"],
+    },
+    academicYear: {
+      type: String,
+      required: [true, "Academic year is required"],
+      enum: {
+        values: ["First Year", "Second Year", "Third Year", "Fourth Year"],
+        message: "Academic year must be First Year, Second Year, Third Year, or Fourth Year",
+      },
+    },
   },
   {
     timestamps: true,
   },
 );
-
-// تشفير كلمة المرور قبل الحفظ في قاعدة البيانات
-userSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-});
-
-// دالة مقارنة كلمة المرور عند تسجيل الدخول
-userSchema.methods.comparePassword = async function (candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
-};
 
 const User = mongoose.model("User", userSchema);
 
