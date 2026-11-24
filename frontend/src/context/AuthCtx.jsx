@@ -18,7 +18,8 @@ export const AuthProvider = ({ children }) => {
 
       try {
         const res = await authService.getProfile();
-        setUser(res.data.user);
+  const data = res.data || res;
+  setUser(data.user || data.data?.user || data);
       } catch (error) {
         // إذا كان التوكن منتهي الصلاحية أو غير صالح نمسحه فوراً
         localStorage.removeItem("token");
