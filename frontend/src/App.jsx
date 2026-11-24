@@ -17,9 +17,9 @@ export default function App() {
         <Route
           path="/profile"
           element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
+            <ProfilePage />
+            // <ProtectedRoute>
+            // </ProtectedRoute>
           }
         />
         <Route path="*" element={<NotFoundPage />} />
