@@ -49,7 +49,7 @@ export default function Navbar() {
                 fontWeight: "700",
               }}
             >
-              Profile ({user.name})
+              Profile ({user.firstName})
             </Link>
             <button
               onClick={logoutUser}
