@@ -31,7 +31,7 @@ export default function Navbar() {
           textDecoration: "none",
         }}
       >
-        CS309 Full-Stack System
+        UniPortal
       </Link>
 
       <nav style={{ display: "flex", gap: "1.25rem", alignItems: "center" }}>

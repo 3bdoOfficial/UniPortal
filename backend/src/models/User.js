@@ -59,6 +59,10 @@ const userSchema = new mongoose.Schema(
       trim: true,
       minlength: [2, "Faculty must be at least 2 characters"],
       maxlength: [100, "Faculty cannot exceed 100 characters"],
+      match: [
+        /^[A-Za-z\u0600-\u06FF\s&'-]+$/,
+        "Faculty must contain letters only (numbers are not allowed)",
+      ],
     },
     department: {
       type: String,
@@ -66,6 +70,10 @@ const userSchema = new mongoose.Schema(
       trim: true,
       minlength: [2, "Department must be at least 2 characters"],
       maxlength: [100, "Department cannot exceed 100 characters"],
+      match: [
+        /^[A-Za-z\u0600-\u06FF\s&'-]+$/,
+        "Department must contain letters only (numbers are not allowed)",
+      ],
     },
     academicYear: {
       type: String,
