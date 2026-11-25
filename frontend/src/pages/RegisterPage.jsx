@@ -607,33 +607,40 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     padding: "1rem 0",
+    backgroundColor: "#F9F3EB",
+    borderRadius: "14px",
   },
+
   card: {
     width: "100%",
     maxWidth: "520px",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#FFFFFF",
     borderRadius: "12px",
-    boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04)",
-    border: "1px solid #e2e8f0",
+    boxShadow: "0 10px 25px -5px rgba(26,62,108,0.08)",
+    border: "1px solid #C6D6EC",
     padding: "2.25rem 2rem",
     boxSizing: "border-box",
   },
+
   header: {
     marginBottom: "1.75rem",
     textAlign: "center",
   },
+
   title: {
     fontSize: "1.65rem",
     fontWeight: "700",
-    color: "#0f172a",
+    color: "#1A3E6C",
     margin: "0 0 0.5rem 0",
   },
+
   subtitle: {
     fontSize: "0.925rem",
-    color: "#64748b",
+    color: "#3D6DA3",
     margin: 0,
     lineHeight: "1.4",
   },
+
   alertError: {
     backgroundColor: "#fef2f2",
     color: "#b91c1c",
@@ -644,97 +651,112 @@ const styles = {
     fontSize: "0.875rem",
     lineHeight: "1.4",
   },
+
   alertInfo: {
-    backgroundColor: "#eff6ff",
-    color: "#1d4ed8",
-    border: "1px solid #bfdbfe",
+    backgroundColor: "#C6D6EC",
+    color: "#1A3E6C",
+    border: "1px solid #3D6DA3",
   },
+
   alertSuccess: {
-    backgroundColor: "#ecfdf5",
-    color: "#047857",
-    border: "1px solid #a7f3d0",
+    backgroundColor: "#EAF1FA",
+    color: "#1A3E6C",
+    border: "1px solid #C6D6EC",
     borderRadius: "8px",
     padding: "0.75rem 1rem",
     marginBottom: "1.25rem",
     fontSize: "0.875rem",
     lineHeight: "1.4",
   },
+
   form: {
     display: "flex",
     flexDirection: "column",
     gap: "1.25rem",
   },
+
   row: {
     display: "flex",
     gap: "1rem",
     flexWrap: "wrap",
   },
+
   col: {
     flex: "1 1 200px",
     display: "flex",
     flexDirection: "column",
   },
+
   formGroup: {
     display: "flex",
     flexDirection: "column",
   },
+
   label: {
     fontSize: "0.875rem",
     fontWeight: "600",
-    color: "#334155",
+    color: "#1A3E6C",
     marginBottom: "0.4rem",
   },
+
   required: {
     color: "#dc2626",
   },
+
   input: {
     width: "100%",
     padding: "0.65rem 0.85rem",
     borderRadius: "7px",
-    border: "1.5px solid #cbd5e1",
+    border: "1.5px solid #C6D6EC",
     fontSize: "0.95rem",
-    color: "#0f172a",
-    backgroundColor: "#ffffff",
+    color: "#1A3E6C",
+    backgroundColor: "#F9F3EB",
     boxSizing: "border-box",
     transition: "border-color 0.15s ease, box-shadow 0.15s ease",
     outline: "none",
   },
+
   inputError: {
     borderColor: "#ef4444",
     backgroundColor: "#fffafa",
   },
+
   errorText: {
     color: "#dc2626",
     fontSize: "0.8rem",
     marginTop: "0.35rem",
     fontWeight: "500",
   },
+
   helperText: {
-    color: "#64748b",
+    color: "#3D6DA3",
     fontSize: "0.775rem",
     marginTop: "0.35rem",
   },
+
   passwordWrapper: {
     position: "relative",
     display: "flex",
     alignItems: "center",
   },
+
   toggleBtn: {
     position: "absolute",
     right: "10px",
     background: "none",
     border: "none",
-    color: "#64748b",
+    color: "#3D6DA3",
     fontSize: "0.8rem",
     fontWeight: "600",
     cursor: "pointer",
     padding: "0.25rem 0.5rem",
   },
+
   submitBtn: {
     marginTop: "0.5rem",
     padding: "0.8rem 1rem",
-    backgroundColor: "#047857",
-    color: "#ffffff",
+    backgroundColor: "#1A3E6C",
+    color: "#FFFFFF",
     border: "none",
     borderRadius: "7px",
     fontSize: "1rem",
@@ -742,20 +764,24 @@ const styles = {
     cursor: "pointer",
     transition: "background-color 0.2s ease, transform 0.1s ease",
   },
+
   submitBtnDisabled: {
-    backgroundColor: "#6ee7b7",
+    backgroundColor: "#C6D6EC",
+    color: "#1A3E6C",
     cursor: "not-allowed",
   },
+
   footer: {
     marginTop: "1.5rem",
     textAlign: "center",
     fontSize: "0.875rem",
-    color: "#475569",
-    borderTop: "1px solid #f1f5f9",
+    color: "#3D6DA3",
+    borderTop: "1px solid #C6D6EC",
     paddingTop: "1.25rem",
   },
+
   link: {
-    color: "#4338ca",
+    color: "#1A3E6C",
     fontWeight: "600",
     textDecoration: "none",
   },
