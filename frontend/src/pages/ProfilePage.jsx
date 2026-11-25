@@ -45,24 +45,35 @@ export default function ProfilePage() {
     }));
   };
 
+  const validateName = (value, label) => {
+    if (!value) return `${label} is required.`;
+    if (/\d/.test(value)) return `${label} cannot contain numbers (letters only).`;
+    if (!/^[A-Za-z\u0600-\u06FF\s'-]+$/.test(value)) {
+      return `${label} can only contain letters.`;
+    }
+    if (value.length < 2 || value.length > 50) {
+      return `${label} must be between 2 and 50 characters.`;
+    }
+    return "";
+  };
+
   const validateEditableFields = () => {
     const first = formData.firstName.trim();
     const last = formData.lastName.trim();
     const email = formData.email.trim();
     const phone = formData.phone.trim();
-    const nameRegex = /^[A-Za-z\u0600-\u06FF\s'-]+$/;
 
-    if (!first || first.length < 2 || first.length > 50 || !nameRegex.test(first)) {
-      return "First name must be 2-50 letters only.";
-    }
-    if (!last || last.length < 2 || last.length > 50 || !nameRegex.test(last)) {
-      return "Last name must be 2-50 letters only.";
-    }
+    const firstError = validateName(first, "First name");
+    if (firstError) return firstError;
+
+    const lastError = validateName(last, "Last name");
+    if (lastError) return lastError;
+
     if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
       return "Please provide a valid email address.";
     }
     const digits = phone.replace(/\D/g, "");
-    if (!phone || !/^\+?[\d\s()-]+$/.test(phone) || digits.length < 7 || digits.length > 15) {
+    if (!phone && /^\+?[\d\s()-]+$/.test(phone) && digits.length > 7 && digits.length < 15) {
       return "Please provide a valid phone number (7-15 digits).";
     }
     return "";

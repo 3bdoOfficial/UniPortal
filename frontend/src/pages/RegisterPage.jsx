@@ -32,26 +32,29 @@ export default function RegisterPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  // Shared text validation helper (checks numbers before length so digits always show a clear message)
+  const validateLettersField = (val, label, maxLen, allowAmpersand = false) => {
+    if (!val) return `${label} is required.`;
+    if (/\d/.test(val)) return `${label} cannot contain numbers (letters only).`;
+    const pattern = allowAmpersand
+      ? /^[A-Za-z\u0600-\u06FF\s&'-]+$/
+      : /^[A-Za-z\u0600-\u06FF\s'-]+$/;
+    if (!pattern.test(val)) return `${label} can only contain letters.`;
+    if (val.length < 2) return `${label} must be at least 2 characters.`;
+    if (val.length > maxLen) return `${label} cannot exceed ${maxLen} characters.`;
+    return "";
+  };
+
   // Field validation logic
   const validateField = (name, value, allValues = formData) => {
     const val = typeof value === "string" ? value.trim() : "";
 
     switch (name) {
       case "firstName":
-        if (!val) return "Student first name is required.";
-        if (val.length < 2) return "First name must be at least 2 characters.";
-        if (!/^[A-Za-z\u0600-\u06FF\s'-]+$/.test(val)) {
-          return "First name can only contain letters.";
-        }
-        return "";
+        return validateLettersField(val, "First name", 50);
 
       case "lastName":
-        if (!val) return "Student last name is required.";
-        if (val.length < 2) return "Last name must be at least 2 characters.";
-        if (!/^[A-Za-z\u0600-\u06FF\s'-]+$/.test(val)) {
-          return "Last name can only contain letters.";
-        }
-        return "";
+        return validateLettersField(val, "Last name", 50);
 
       case "studentId":
         if (!val) return "Student ID is required.";
@@ -85,22 +88,10 @@ export default function RegisterPage() {
       }
 
       case "faculty":
-        if (!val) return "Faculty is required.";
-        if (val.length < 2) return "Faculty must be at least 2 characters.";
-        if (val.length > 100) return "Faculty cannot exceed 100 characters.";
-        if (!/^[A-Za-z\u0600-\u06FF\s&'-]+$/.test(val)) {
-          return "Faculty must contain letters only (numbers are not allowed).";
-        }
-        return "";
+        return validateLettersField(val, "Faculty", 100, true);
 
       case "department":
-        if (!val) return "Department is required.";
-        if (val.length < 2) return "Department must be at least 2 characters.";
-        if (val.length > 100) return "Department cannot exceed 100 characters.";
-        if (!/^[A-Za-z\u0600-\u06FF\s&'-]+$/.test(val)) {
-          return "Department must contain letters only (numbers are not allowed).";
-        }
-        return "";
+        return validateLettersField(val, "Department", 100, true);
 
       case "academicYear": {
         const validYears = ["First Year", "Second Year", "Third Year", "Fourth Year"];
