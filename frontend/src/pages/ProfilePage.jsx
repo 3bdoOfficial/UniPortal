@@ -314,14 +314,17 @@ const styles = {
     display: "flex",
     gap: "25px",
     minHeight: "650px",
-    color: "#0f172a",
+    color: "#1A3E6C",
+    backgroundColor: "#F9F3EB",
+    padding: "15px",
+    borderRadius: "14px",
   },
 
   sidebar: {
     width: "210px",
     flexShrink: 0,
-    backgroundColor: "#064e3b",
-    color: "white",
+    backgroundColor: "#1A3E6C",
+    color: "#FFFFFF",
     borderRadius: "12px",
     padding: "25px 15px",
     display: "flex",
@@ -331,17 +334,19 @@ const styles = {
   logo: {
     margin: "0 0 35px",
     fontSize: "23px",
+    color: "#FFFFFF",
   },
 
   sideTitle: {
-    color: "#a7f3d0",
+    color: "#C6D6EC",
     fontSize: "11px",
     letterSpacing: "1px",
     paddingLeft: "10px",
   },
 
   activeItem: {
-    backgroundColor: "#047857",
+    backgroundColor: "#3D6DA3",
+    color: "#FFFFFF",
     padding: "13px 10px",
     borderRadius: "7px",
     fontWeight: "bold",
@@ -350,8 +355,8 @@ const styles = {
   logout: {
     marginTop: "auto",
     background: "transparent",
-    color: "white",
-    border: "1px solid #6ee7b7",
+    color: "#FFFFFF",
+    border: "1px solid #C6D6EC",
     padding: "11px",
     borderRadius: "7px",
     cursor: "pointer",
@@ -374,16 +379,17 @@ const styles = {
   heading: {
     margin: 0,
     fontSize: "27px",
+    color: "#1A3E6C",
   },
 
   subheading: {
-    color: "#64748b",
+    color: "#3D6DA3",
     marginTop: "7px",
   },
 
   badge: {
-    backgroundColor: "#d1fae5",
-    color: "#047857",
+    backgroundColor: "#C6D6EC",
+    color: "#1A3E6C",
     padding: "8px 12px",
     borderRadius: "20px",
     fontSize: "12px",
@@ -394,8 +400,8 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: "18px",
-    backgroundColor: "white",
-    border: "1px solid #e2e8f0",
+    backgroundColor: "#FFFFFF",
+    border: "1px solid #C6D6EC",
     borderRadius: "12px",
     padding: "22px",
     marginBottom: "20px",
@@ -405,8 +411,8 @@ const styles = {
     width: "65px",
     height: "65px",
     borderRadius: "50%",
-    backgroundColor: "#047857",
-    color: "white",
+    backgroundColor: "#3D6DA3",
+    color: "#FFFFFF",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -417,16 +423,17 @@ const styles = {
   name: {
     margin: 0,
     fontSize: "20px",
+    color: "#1A3E6C",
   },
 
   email: {
-    color: "#64748b",
+    color: "#3D6DA3",
     margin: "6px 0 0",
   },
 
   section: {
-    backgroundColor: "white",
-    border: "1px solid #e2e8f0",
+    backgroundColor: "#FFFFFF",
+    border: "1px solid #C6D6EC",
     borderRadius: "12px",
     padding: "22px",
     marginBottom: "20px",
@@ -443,6 +450,7 @@ const styles = {
   sectionTitle: {
     margin: 0,
     fontSize: "18px",
+    color: "#1A3E6C",
   },
 
   grid: {
@@ -455,7 +463,7 @@ const styles = {
     display: "block",
     fontSize: "13px",
     fontWeight: "600",
-    color: "#475569",
+    color: "#1A3E6C",
     marginBottom: "7px",
   },
 
@@ -463,16 +471,16 @@ const styles = {
     width: "100%",
     boxSizing: "border-box",
     padding: "11px",
-    border: "1px solid #cbd5e1",
+    border: "1px solid #C6D6EC",
     borderRadius: "7px",
-    backgroundColor: "#f8fafc",
-    color: "#0f172a",
+    backgroundColor: "#F9F3EB",
+    color: "#1A3E6C",
     fontSize: "14px",
   },
 
   editButton: {
-    backgroundColor: "#047857",
-    color: "white",
+    backgroundColor: "#1A3E6C",
+    color: "#FFFFFF",
     border: "none",
     borderRadius: "7px",
     padding: "10px 14px",
@@ -486,8 +494,8 @@ const styles = {
   },
 
   saveButton: {
-    backgroundColor: "#047857",
-    color: "white",
+    backgroundColor: "#1A3E6C",
+    color: "#FFFFFF",
     border: "none",
     borderRadius: "7px",
     padding: "12px 20px",
@@ -495,8 +503,8 @@ const styles = {
   },
 
   cancelButton: {
-    backgroundColor: "#e2e8f0",
-    color: "#334155",
+    backgroundColor: "#C6D6EC",
+    color: "#1A3E6C",
     border: "none",
     borderRadius: "7px",
     padding: "12px 20px",
