@@ -22,13 +22,39 @@ export default function HomePage() {
   }, []);
 
   return (
-    <section>
-      <h1>CS309 Full-Stack Project Starter</h1>
-      <p style={{ margin: "1rem 0", fontWeight: "600", color: "#047857" }}>
+    <section
+      style={{
+        backgroundColor: "#F9F3EB",
+        color: "#1A3E6C",
+        padding: "30px",
+        borderRadius: "12px",
+        minHeight: "300px",
+        border: "1px solid #C6D6EC",
+      }}
+    >
+      <h1 style={{ color: "#1A3E6C" }}>CS309 Full-Stack Project Starter</h1>
+
+      <p
+        style={{
+          margin: "1rem 0",
+          fontWeight: "600",
+          color: "#3D6DA3",
+        }}
+      >
         Status: {serverStatus}
       </p>
+
       <p>
-        <Link to="/register">Open Student Registration System →</Link>
+        <Link
+          to="/register"
+          style={{
+            color: "#1A3E6C",
+            fontWeight: "600",
+            textDecoration: "none",
+          }}
+        >
+          Open Student Registration System →
+        </Link>
       </p>
     </section>
   );
