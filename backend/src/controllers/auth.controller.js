@@ -8,6 +8,18 @@ const ACADEMIC_TEXT_RE = /^[A-Za-z\u0600-\u06FF\s&'-]+$/;
 const EMAIL_RE = /^\S+@\S+\.\S+$/;
 const PHONE_RE = /^\+?[\d\s()-]+$/;
 
+const validateLettersText = (value, label, maxLen, allowAmpersand = false) => {
+  const val = typeof value === "string" ? value.trim() : "";
+  if (!val) return `${label} is required.`;
+  if (/\d/.test(val)) return `${label} cannot contain numbers (letters only).`;
+  const pattern = allowAmpersand ? ACADEMIC_TEXT_RE : NAME_RE;
+  if (!pattern.test(val)) return `${label} can only contain letters.`;
+  if (val.length < 2 || val.length > maxLen) {
+    return `${label} must be between 2 and ${maxLen} characters.`;
+  }
+  return "";
+};
+
 const formatUser = (user) => ({
   id: user._id,
   firstName: user.firstName,
@@ -39,24 +51,22 @@ export const register = async (req, res, next) => {
 
     const errors = {};
 
-    // 1. التحقق من الحقول المطلوبة وصيغة الكلية والقسم
-    if (!firstName?.trim()) errors.firstName = "First name is required.";
-    if (!lastName?.trim()) errors.lastName = "Last name is required.";
+    // 1. التحقق من الحقول المطلوبة وصيغة الأسماء والكلية والقسم
+    const firstNameErr = validateLettersText(firstName, "First name", 50);
+    if (firstNameErr) errors.firstName = firstNameErr;
+
+    const lastNameErr = validateLettersText(lastName, "Last name", 50);
+    if (lastNameErr) errors.lastName = lastNameErr;
+
     if (!studentId?.trim()) errors.studentId = "Student ID is required.";
     if (!email?.trim()) errors.email = "Email address is required.";
     if (!phone?.trim()) errors.phone = "Phone number is required.";
 
-    if (!faculty?.trim()) {
-      errors.faculty = "Faculty is required.";
-    } else if (!ACADEMIC_TEXT_RE.test(faculty.trim())) {
-      errors.faculty = "Faculty must contain letters only (numbers are not allowed).";
-    }
+    const facultyErr = validateLettersText(faculty, "Faculty", 100, true);
+    if (facultyErr) errors.faculty = facultyErr;
 
-    if (!department?.trim()) {
-      errors.department = "Department is required.";
-    } else if (!ACADEMIC_TEXT_RE.test(department.trim())) {
-      errors.department = "Department must contain letters only (numbers are not allowed).";
-    }
+    const departmentErr = validateLettersText(department, "Department", 100, true);
+    if (departmentErr) errors.department = departmentErr;
 
     if (!academicYear?.trim())
       errors.academicYear = "Academic year is required.";
@@ -207,24 +217,20 @@ export const updateProfile = async (req, res, next) => {
     const errors = {};
 
     if (firstName !== undefined) {
-      const val = String(firstName).trim();
-      if (!val || val.length < 2 || val.length > 50) {
-        errors.firstName = "First name must be between 2 and 50 characters.";
-      } else if (!NAME_RE.test(val)) {
-        errors.firstName = "First name can only contain letters.";
+      const err = validateLettersText(firstName, "First name", 50);
+      if (err) {
+        errors.firstName = err;
       } else {
-        updates.firstName = val;
+        updates.firstName = firstName.trim();
       }
     }
 
     if (lastName !== undefined) {
-      const val = String(lastName).trim();
-      if (!val || val.length < 2 || val.length > 50) {
-        errors.lastName = "Last name must be between 2 and 50 characters.";
-      } else if (!NAME_RE.test(val)) {
-        errors.lastName = "Last name can only contain letters.";
+      const err = validateLettersText(lastName, "Last name", 50);
+      if (err) {
+        errors.lastName = err;
       } else {
-        updates.lastName = val;
+        updates.lastName = lastName.trim();
       }
     }
 
