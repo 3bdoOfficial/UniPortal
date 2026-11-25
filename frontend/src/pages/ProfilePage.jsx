@@ -11,6 +11,7 @@ export default function ProfilePage() {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -44,21 +45,52 @@ export default function ProfilePage() {
     }));
   };
 
+  const validateEditableFields = () => {
+    const first = formData.firstName.trim();
+    const last = formData.lastName.trim();
+    const email = formData.email.trim();
+    const phone = formData.phone.trim();
+    const nameRegex = /^[A-Za-z\u0600-\u06FF\s'-]+$/;
+
+    if (!first || first.length < 2 || first.length > 50 || !nameRegex.test(first)) {
+      return "First name must be 2-50 letters only.";
+    }
+    if (!last || last.length < 2 || last.length > 50 || !nameRegex.test(last)) {
+      return "Last name must be 2-50 letters only.";
+    }
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      return "Please provide a valid email address.";
+    }
+    const digits = phone.replace(/\D/g, "");
+    if (!phone || !/^\+?[\d\s()-]+$/.test(phone) || digits.length < 7 || digits.length > 15) {
+      return "Please provide a valid phone number (7-15 digits).";
+    }
+    return "";
+  };
+
   const handleSave = async (e) => {
     e.preventDefault();
 
     if (!user) return;
 
+    const validationError = validateEditableFields();
+    if (validationError) {
+      setError(validationError);
+      setSuccess("");
+      return;
+    }
+
     setSaving(true);
     setError("");
+    setSuccess("");
 
     try {
-      // Only send editable fields
+      // Only send the 4 editable personal fields
       const response = await authService.updateProfile({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName.trim(),
+        email: formData.email.trim().toLowerCase(),
+        phone: formData.phone.trim(),
       });
 
       const data = response.data || response;
@@ -72,6 +104,7 @@ export default function ProfilePage() {
 
       setUser(mergedUser);
       setEditing(false);
+      setSuccess("Profile updated successfully.");
     } catch (err) {
       setError(
         err.response?.data?.message || "Could not update profile."
@@ -94,6 +127,7 @@ export default function ProfilePage() {
 
     setEditing(false);
     setError("");
+    setSuccess("");
   };
 
   const handleLogout = () => {
@@ -174,7 +208,11 @@ export default function ProfilePage() {
               {user && !editing && (
                 <button
                   type="button"
-                  onClick={() => setEditing(true)}
+                  onClick={() => {
+                    setEditing(true);
+                    setSuccess("");
+                    setError("");
+                  }}
                   style={styles.editButton}
                 >
                   Edit Profile
@@ -283,6 +321,7 @@ export default function ProfilePage() {
           </section>
 
           {error && <p style={styles.error}>{error}</p>}
+          {success && <p style={styles.success}>{success}</p>}
 
           {user && editing && (
             <div style={styles.actions}>
@@ -513,5 +552,10 @@ const styles = {
 
   error: {
     color: "#dc2626",
+  },
+
+  success: {
+    color: "#047857",
+    fontWeight: "600",
   },
 };

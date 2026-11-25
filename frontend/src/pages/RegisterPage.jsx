@@ -87,11 +87,19 @@ export default function RegisterPage() {
       case "faculty":
         if (!val) return "Faculty is required.";
         if (val.length < 2) return "Faculty must be at least 2 characters.";
+        if (val.length > 100) return "Faculty cannot exceed 100 characters.";
+        if (!/^[A-Za-z\u0600-\u06FF\s&'-]+$/.test(val)) {
+          return "Faculty must contain letters only (numbers are not allowed).";
+        }
         return "";
 
       case "department":
         if (!val) return "Department is required.";
         if (val.length < 2) return "Department must be at least 2 characters.";
+        if (val.length > 100) return "Department cannot exceed 100 characters.";
+        if (!/^[A-Za-z\u0600-\u06FF\s&'-]+$/.test(val)) {
+          return "Department must contain letters only (numbers are not allowed).";
+        }
         return "";
 
       case "academicYear": {

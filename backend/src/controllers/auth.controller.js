@@ -3,6 +3,24 @@ import bcrypt from "bcrypt";
 import User from "../models/User.js";
 import { JWT_SECRET, JWT_EXPIRES_IN } from "../config/env.js";
 
+const NAME_RE = /^[A-Za-z\u0600-\u06FF\s'-]+$/;
+const ACADEMIC_TEXT_RE = /^[A-Za-z\u0600-\u06FF\s&'-]+$/;
+const EMAIL_RE = /^\S+@\S+\.\S+$/;
+const PHONE_RE = /^\+?[\d\s()-]+$/;
+
+const formatUser = (user) => ({
+  id: user._id,
+  firstName: user.firstName,
+  lastName: user.lastName,
+  studentId: user.studentId,
+  email: user.email,
+  phone: user.phone,
+  faculty: user.faculty,
+  department: user.department,
+  academicYear: user.academicYear,
+  role: user.role,
+});
+
 // POST /api/auth/register
 export const register = async (req, res, next) => {
   try {
@@ -21,14 +39,25 @@ export const register = async (req, res, next) => {
 
     const errors = {};
 
-    // 1. التحقق من الحقول المطلوبة
+    // 1. التحقق من الحقول المطلوبة وصيغة الكلية والقسم
     if (!firstName?.trim()) errors.firstName = "First name is required.";
     if (!lastName?.trim()) errors.lastName = "Last name is required.";
     if (!studentId?.trim()) errors.studentId = "Student ID is required.";
     if (!email?.trim()) errors.email = "Email address is required.";
     if (!phone?.trim()) errors.phone = "Phone number is required.";
-    if (!faculty?.trim()) errors.faculty = "Faculty is required.";
-    if (!department?.trim()) errors.department = "Department is required.";
+
+    if (!faculty?.trim()) {
+      errors.faculty = "Faculty is required.";
+    } else if (!ACADEMIC_TEXT_RE.test(faculty.trim())) {
+      errors.faculty = "Faculty must contain letters only (numbers are not allowed).";
+    }
+
+    if (!department?.trim()) {
+      errors.department = "Department is required.";
+    } else if (!ACADEMIC_TEXT_RE.test(department.trim())) {
+      errors.department = "Department must contain letters only (numbers are not allowed).";
+    }
+
     if (!academicYear?.trim())
       errors.academicYear = "Academic year is required.";
     if (!password) errors.password = "Password is required.";
@@ -107,18 +136,7 @@ export const register = async (req, res, next) => {
       success: true,
       message: "Account created successfully",
       token,
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        studentId: user.studentId,
-        email: user.email,
-        phone: user.phone,
-        faculty: user.faculty,
-        department: user.department,
-        academicYear: user.academicYear,
-        role: user.role,
-      },
+      user: formatUser(user),
     });
   } catch (error) {
     next(error);
@@ -164,18 +182,7 @@ export const login = async (req, res, next) => {
       success: true,
       message: "Logged in successfully",
       token,
-      user: {
-        id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        studentId: user.studentId,
-        email: user.email,
-        phone: user.phone,
-        faculty: user.faculty,
-        department: user.department,
-        academicYear: user.academicYear,
-        role: user.role,
-      },
+      user: formatUser(user),
     });
   } catch (error) {
     next(error);
@@ -186,6 +193,98 @@ export const login = async (req, res, next) => {
 export const getProfile = async (req, res) => {
   return res.json({
     success: true,
-    user: req.user,
+    user: formatUser(req.user),
   });
+};
+
+// PUT /api/auth/profile
+// مسموح بتعديل البيانات الشخصية الأربعة فقط (firstName, lastName, email, phone)
+// والبيانات الأكاديمية (studentId, faculty, department, academicYear) غير قابلة للتعديل
+export const updateProfile = async (req, res, next) => {
+  try {
+    const { firstName, lastName, email, phone } = req.body;
+    const updates = {};
+    const errors = {};
+
+    if (firstName !== undefined) {
+      const val = String(firstName).trim();
+      if (!val || val.length < 2 || val.length > 50) {
+        errors.firstName = "First name must be between 2 and 50 characters.";
+      } else if (!NAME_RE.test(val)) {
+        errors.firstName = "First name can only contain letters.";
+      } else {
+        updates.firstName = val;
+      }
+    }
+
+    if (lastName !== undefined) {
+      const val = String(lastName).trim();
+      if (!val || val.length < 2 || val.length > 50) {
+        errors.lastName = "Last name must be between 2 and 50 characters.";
+      } else if (!NAME_RE.test(val)) {
+        errors.lastName = "Last name can only contain letters.";
+      } else {
+        updates.lastName = val;
+      }
+    }
+
+    if (email !== undefined) {
+      const val = String(email).trim().toLowerCase();
+      if (!val || !EMAIL_RE.test(val)) {
+        errors.email = "Please provide a valid email address.";
+      } else {
+        const existingUser = await User.findOne({
+          email: val,
+          _id: { $ne: req.user._id },
+        });
+        if (existingUser) {
+          return res.status(409).json({
+            success: false,
+            message: "This email address is already in use.",
+            errors: { email: "This email address is already in use." },
+          });
+        }
+        updates.email = val;
+      }
+    }
+
+    if (phone !== undefined) {
+      const val = String(phone).trim();
+      const digits = val.replace(/\D/g, "");
+      if (!val || !PHONE_RE.test(val) || digits.length < 7 || digits.length > 15) {
+        errors.phone =
+          "Please provide a valid phone number (7-15 digits, optional country code).";
+      } else {
+        updates.phone = val;
+      }
+    }
+
+    if (Object.keys(errors).length > 0) {
+      return res.status(400).json({
+        success: false,
+        message: Object.values(errors)[0],
+        errors,
+      });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, updates, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    return res.json({
+      success: true,
+      message: "Profile updated successfully",
+      user: formatUser(updatedUser),
+    });
+  } catch (error) {
+    next(error);
+  }
 };
