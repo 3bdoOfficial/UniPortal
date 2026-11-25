@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
@@ -101,6 +102,7 @@ export default function LoginPage() {
   );
 }
 
+
 const styles = {
   container: {
     display: "flex",
@@ -108,56 +110,68 @@ const styles = {
     alignItems: "center",
     minHeight: "75vh",
     padding: "30px 15px",
+    backgroundColor: "#F9F3EB",
+    borderRadius: "14px",
   },
+
   card: {
     width: "100%",
     maxWidth: "430px",
-    backgroundColor: "#ffffff",
+    backgroundColor: "#FFFFFF",
     padding: "35px",
     borderRadius: "14px",
-    border: "1px solid #e2e8f0",
-    boxShadow: "0 8px 25px rgba(0,0,0,0.07)",
+    border: "1px solid #C6D6EC",
+    boxShadow: "0 8px 25px rgba(26,62,108,0.08)",
     boxSizing: "border-box",
   },
+
   logo: {
-    color: "#047857",
+    color: "#1A3E6C",
     fontSize: "24px",
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: "20px",
   },
+
   title: {
     textAlign: "center",
-    color: "#0f172a",
+    color: "#1A3E6C",
     marginBottom: "8px",
   },
+
   subtitle: {
     textAlign: "center",
-    color: "#64748b",
+    color: "#3D6DA3",
     marginBottom: "28px",
   },
+
   form: {
     display: "flex",
     flexDirection: "column",
     gap: "18px",
   },
+
   label: {
     display: "block",
-    color: "#334155",
+    color: "#1A3E6C",
     fontWeight: "600",
     marginBottom: "7px",
   },
+
   input: {
     width: "100%",
     padding: "12px",
-    border: "1px solid #cbd5e1",
+    border: "1px solid #C6D6EC",
     borderRadius: "7px",
     fontSize: "15px",
     boxSizing: "border-box",
+    backgroundColor: "#F9F3EB",
+    color: "#1A3E6C",
   },
+
   button: {
-    backgroundColor: "#047857",
-    color: "white",
+    backgroundColor: "#1A3E6C",
+    color: "#FFFFFF",
     border: "none",
     borderRadius: "7px",
     padding: "13px",
@@ -165,14 +179,16 @@ const styles = {
     fontWeight: "bold",
     cursor: "pointer",
   },
+
   error: {
     color: "#dc2626",
     fontSize: "14px",
     margin: 0,
   },
+
   footer: {
     textAlign: "center",
     marginTop: "22px",
-    color: "#64748b",
+    color: "#3D6DA3",
   },
 };
